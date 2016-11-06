@@ -10,6 +10,7 @@ import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.YouTubeRequestInitializer;
 import com.google.api.services.youtube.model.SearchListResponse;
 import com.google.api.services.youtube.model.SearchResult;
+import com.google.api.services.youtube.model.Video;
 import com.squareup.picasso.Picasso;
 
 import android.app.Activity;
@@ -41,10 +42,12 @@ public class MainActivity extends AppCompatActivity {
     private SwipeDeckAdapter adapter;
     private Button undoButton;
     private int videoIndex = 0;
+    private VideoManager manager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        manager = VideoManager.getInstance();
         setContentView(R.layout.activity_main);
         cardStack = (SwipeDeck) findViewById(R.id.swipe_deck);
 
@@ -53,6 +56,9 @@ public class MainActivity extends AppCompatActivity {
             public void cardSwipedLeft(long stableId) {
                 Log.i("MainActivity", "card was swiped left, position in adapter: " + stableId);
                 undoButton.setVisibility(View.VISIBLE);
+                if (stableId + 3 > manager.videos.size()) {
+                    manager.getNextVideos();
+                }
                 videoIndex++;
             }
 
@@ -60,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
             public void cardSwipedRight(long stableId) {
                 Log.i("MainActivity", "card was swiped right, position in adapter: " + stableId);
                 undoButton.setVisibility(View.VISIBLE);
+                manager.getNextVideosRelatedTo(manager.videos.get((int)stableId).getId().getVideoId());
                 videoIndex++;
             }
         });
@@ -101,17 +108,20 @@ public class MainActivity extends AppCompatActivity {
         if (videoIndex == 0){
             undoButton.setVisibility(View.GONE);
         }
+        adapter = new MainActivity.SwipeDeckAdapter();
+        cardStack.setAdapter(adapter);
 
-        VideoManager.getInstance().listener = new VideoManager.VideoManagerListener() {
+        manager.listener = new VideoManager.VideoManagerListener() {
             @Override
             public void onResults(List<SearchResult> results) {
-                adapter = new MainActivity.SwipeDeckAdapter(results, context);
                 if (cardStack != null) {
-                    cardStack.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
                 }
             }
         };
-        VideoManager.getInstance().getVideos();
+        if (manager.videos.size() < 3){
+            manager.getNextVideos();
+        }
     }
 
     @Override
@@ -122,22 +132,16 @@ public class MainActivity extends AppCompatActivity {
 
     public class SwipeDeckAdapter extends BaseAdapter {
 
-        private List<SearchResult> data;
-        private Context context;
-
-        public SwipeDeckAdapter(List<SearchResult> data, Context context) {
-            this.data = data;
-            this.context = context;
-        }
+        public SwipeDeckAdapter() {}
 
         @Override
         public int getCount() {
-            return data.size();
+            return manager.videos.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return data.get(position);
+            return manager.videos.get(position);
         }
 
         @Override
@@ -151,7 +155,6 @@ public class MainActivity extends AppCompatActivity {
             View v = convertView;
             if (v == null) {
                 LayoutInflater inflater = getLayoutInflater();
-                // normally use a viewholder
                 v = inflater.inflate(R.layout.video_card, parent, false);
             }
 
