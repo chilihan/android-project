@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -39,6 +40,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        reload(null);
+    }
+
+    private String currentQuery = "Some Random Query";
+    public void reload(String query){
+        if (query == currentQuery){
+            return;
+        }
+        currentQuery = query;
+        if (manager != null){
+            manager.listener = null;
+        }
+
         setContentView(R.layout.activity_main);
         cardStack = (SwipeDeck) findViewById(R.id.swipe_deck);
 
@@ -82,14 +96,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        cardStack.setAdapter(adapter);
-        reload(null);
-    }
-
-    public void reload(String query){
-        if (manager != null){
-            manager.listener = null;
-        }
         manager = new VideoManager(this, query);
         manager.listener = new VideoManager.VideoManagerListener() {
             @Override
@@ -103,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
             manager.getNextVideos();
         }
         adapter.notifyDataSetChanged();
+        cardStack.setAdapter(adapter);
     }
 
     @Override
@@ -111,7 +118,8 @@ public class MainActivity extends AppCompatActivity {
         inflater.inflate(R.menu.menu_main, menu);
 
         SearchManager manager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView search = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        MenuItem item = menu.findItem(R.id.action_search);
+        SearchView search = (SearchView) item.getActionView();
         search.setSearchableInfo(manager.getSearchableInfo(getComponentName()));
         search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
