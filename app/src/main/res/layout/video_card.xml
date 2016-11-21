@@ -52,7 +52,9 @@
         <TextView
             android:id="@+id/description_text"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
             android:text="Description"
             android:gravity="center_horizontal"
             android:layout_marginTop="10dp"
