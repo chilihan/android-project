@@ -16,16 +16,20 @@
         android:layout_height="match_parent">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="300dp">
             <ImageView
                 tools:src="@drawable/food"
                 android:id="@+id/offer_image"
                 android:layout_width="match_parent"
-                android:scaleType="centerCrop"
-                android:adjustViewBounds="true"
-                android:layout_height="300dp" />
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"/>
 
-
+            <ImageView
+                android:id="@+id/play_icon"
+                android:src="@drawable/ic_play_circle_filled_white_48dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="center"/>
         </RelativeLayout>
 
         <TextView

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <ImageView
+        tools:src="@drawable/food"
+        android:id="@+id/offer_image"
+        android:layout_width="160dp"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        android:layout_height="90dp" />
+
+    <TextView
+        android:id="@+id/description_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Description"
+        android:gravity="center_horizontal"
+        android:textSize="14dp"
+        android:layout_alignBottom="@+id/offer_image"
+        android:layout_toEndOf="@+id/offer_image"
+        android:layout_below="@+id/channel_text" />
+
+    <TextView
+        android:id="@+id/channel_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Channel"
+        android:gravity="center_horizontal"
+        android:textStyle="normal|bold"
+        android:layout_below="@+id/title_text"
+        android:layout_toEndOf="@+id/offer_image" />
+
+    <TextView
+        android:id="@+id/title_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Blank Space"
+        android:gravity="center_horizontal"
+        android:textSize="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_toEndOf="@+id/offer_image" />
+</RelativeLayout>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/action_search"
+        android:title="Search Video"
+        android:icon="@drawable/ic_search_white_24dp"
+        app:showAsAction="collapseActionView|ifRoom"
+        app:actionViewClass="android.support.v7.widget.SearchView" />
+    <item
+        android:id="@+id/action_liked_videos"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_playlist_add_check_white_24dp"
+        android:title="Liked videos"/>
+    <item
+        android:id="@+id/action_reset"
+        app:showAsAction="never"
+        android:title="Reset Database"/>
+</menu>
